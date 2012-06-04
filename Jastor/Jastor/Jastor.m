@@ -1,6 +1,7 @@
 #import "Jastor.h"
 #import "JastorRuntimeHelper.h"
-
+#import "DateTimeUtils.h"
+#import "CustomNSDateComponents.h"
 @implementation Jastor
 
 @synthesize objectId;
@@ -43,7 +44,14 @@ Class nsArrayClass;
 				value = childObjects;
 			}
 			// handle all others
-			[self setValue:value forKey:key];
+            Class klass = [JastorRuntimeHelper propertyClassForPropertyName:key ofClass:[self class]];
+            if ([klass isSubclassOfClass:[NSDate class]]) {
+                [self setValue:[DateTimeUtils getDateFromIsoFormat:value] forKey:key];
+            } else if ([klass isSubclassOfClass:[CustomNSDateComponents class]]) {
+                [self setValue:[DateTimeUtils deSerializeDateComponents:value] forKey:key];
+            } else {
+                [self setValue:value forKey:key];
+            }
 		}
 		
 		id objectIdValue;

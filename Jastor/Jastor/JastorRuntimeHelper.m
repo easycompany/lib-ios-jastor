@@ -21,7 +21,8 @@ static NSMutableDictionary *propertyClassByClassAndPropertyName;
 
 + (NSArray *)propertyNames:(Class)klass {
 	if (!propertyListByClass) propertyListByClass = [[NSMutableDictionary alloc] init];
-	
+    if (!propertyClassByClassAndPropertyName) propertyClassByClassAndPropertyName = [[NSMutableDictionary alloc] init];
+
 	NSString *className = NSStringFromClass(klass);
 	NSArray *value = [propertyListByClass objectForKey:className];
 	
@@ -37,7 +38,13 @@ static NSMutableDictionary *propertyClassByClassAndPropertyName;
 		objc_property_t property = properties[i];
 		const char * name = property_getName(property);
 		
-		[propertyNames addObject:[NSString stringWithUTF8String:name]];
+        NSString *propertyName = [NSString stringWithUTF8String:name];
+		[propertyNames addObject:propertyName];
+        
+        NSString *key = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(klass), propertyName];
+        NSString *className = [NSString stringWithUTF8String:property_getTypeName(property)];
+        [propertyClassByClassAndPropertyName setObject:className forKey:key];
+        
 	}
 	free(properties);
 	
