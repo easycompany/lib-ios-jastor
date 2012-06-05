@@ -2,6 +2,8 @@
 #import "JastorRuntimeHelper.h"
 #import "DateTimeUtils.h"
 #import "CustomNSDateComponents.h"
+#import "EnumObject.h"
+
 @implementation Jastor
 
 @synthesize objectId;
@@ -49,6 +51,9 @@ Class nsArrayClass;
                 [self setValue:[DateTimeUtils getDateFromIsoFormat:value] forKey:key];
             } else if ([klass isSubclassOfClass:[CustomNSDateComponents class]]) {
                 [self setValue:[DateTimeUtils deSerializeDateComponents:value] forKey:key];
+            } else if ([klass isSubclassOfClass:[EnumObject class]]) {
+                NSObject *enumObject = [[klass alloc] initWithString:value];
+                [self setValue:enumObject forKey:key];
             } else {
                 [self setValue:value forKey:key];
             }
