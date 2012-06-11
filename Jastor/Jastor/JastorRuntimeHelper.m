@@ -43,12 +43,9 @@ static NSMutableDictionary *propertyClassByClassAndPropertyName;
         
         NSString *key = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(klass), propertyName];
         NSString *className = [NSString stringWithUTF8String:property_getTypeName(property)];
-        if (className == nil && [propertyName rangeOfString:@"provider"].location != NSNotFound) {
-            [propertyClassByClassAndPropertyName setObject:@"SocialIDProvider" forKey:key];
-        }else {
+        if (className != nil) {
             [propertyClassByClassAndPropertyName setObject:className forKey:key];
         }
-        
 	}
 	free(properties);
 	
