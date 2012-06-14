@@ -26,7 +26,11 @@ Class nsArrayClass;
 			// handle dictionary
 			if ([value isKindOfClass:nsDictionaryClass]) {
 				Class klass = [JastorRuntimeHelper propertyClassForPropertyName:key ofClass:[self class]];
-				value = [[[klass alloc] initWithDictionary:value] autorelease];
+                if (klass == [NSObject class]) {
+                    value = [[[NSDictionary alloc] initWithDictionary:value] autorelease];
+                }else {
+                    value = [[[klass alloc] initWithDictionary:value] autorelease];
+                }
 			}
 			// handle array
 			else if ([value isKindOfClass:nsArrayClass]) {
