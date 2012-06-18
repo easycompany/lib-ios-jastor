@@ -28,6 +28,21 @@ Class nsArrayClass;
 				Class klass = [JastorRuntimeHelper propertyClassForPropertyName:key ofClass:[self class]];
                 if (klass == [NSObject class]) {
                     value = [[[NSDictionary alloc] initWithDictionary:value] autorelease];
+                }else if (klass == [NSDictionary class]) {
+                    Class dictionaryItemType = [[self class] performSelector:NSSelectorFromString([NSString stringWithFormat:@"%@_class", key])];
+                    
+                    NSMutableDictionary *childObjects = [NSMutableDictionary dictionaryWithCapacity:[[value allKeys] count]];
+                    
+                    for (NSString *key in [value allKeys]) {
+                        id child = [value objectForKey:key];
+                        Jastor *childDTO = [[[dictionaryItemType alloc] initWithDictionary:child] autorelease];
+                        [childObjects setObject:childDTO forKey:key];
+                    }
+                    
+                    
+                    value = childObjects;
+                    
+                    
                 }else {
                     value = [[[klass alloc] initWithDictionary:value] autorelease];
                 }
