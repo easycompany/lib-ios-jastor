@@ -1,5 +1,6 @@
 #import <objc/runtime.h>
 #import "JastorRuntimeHelper.h"
+#import "Jastor.h"
 
 static const char *property_getTypeName(objc_property_t property) {
 	const char *attributes = property_getAttributes(property);
@@ -32,22 +33,34 @@ static NSMutableDictionary *propertyClassByClassAndPropertyName;
 	
 	NSMutableArray *propertyNames = [[NSMutableArray alloc] init];
 	unsigned int propertyCount = 0;
-	objc_property_t *properties = class_copyPropertyList(klass, &propertyCount);
-	
-	for (unsigned int i = 0; i < propertyCount; ++i) {
-		objc_property_t property = properties[i];
-		const char * name = property_getName(property);
-		
-        NSString *propertyName = [NSString stringWithUTF8String:name];
-		[propertyNames addObject:propertyName];
+    Class tempClass = klass;
+    while (tempClass != [NSObject class] && tempClass != [Jastor class]) {
+        objc_property_t *properties = class_copyPropertyList(tempClass, &propertyCount);
         
-        NSString *key = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(klass), propertyName];
-        NSString *className = [NSString stringWithUTF8String:property_getTypeName(property)];
-        if (className != nil) {
-            [propertyClassByClassAndPropertyName setObject:className forKey:key];
+        for (unsigned int i = 0; i < propertyCount; ++i) {
+            objc_property_t property = properties[i];
+            const char * name = property_getName(property);
+            
+            NSString *propertyName = [NSString stringWithUTF8String:name];
+            [propertyNames addObject:propertyName];
+            
+            NSString *key = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(klass), propertyName];
+            NSString *className;
+            if ([propertyName isEqualToString:@"enumValue"]) {
+                className = @"NSString";
+            } else {
+                className = [NSString stringWithUTF8String:property_getTypeName(property)];
+            }
+                    
+            if (className != nil) {
+                [propertyClassByClassAndPropertyName setObject:className forKey:key];
+            }
         }
-	}
-	free(properties);
+        free(properties);
+        
+        tempClass = [tempClass superclass];
+    }
+    
 	
 	[propertyListByClass setObject:propertyNames forKey:className];
 	
