@@ -2,7 +2,6 @@
 #import "JastorRuntimeHelper.h"
 #import "DateTimeUtils.h"
 #import "CustomNSDateComponents.h"
-#import "EnumObject.h"
 
 @implementation Jastor
 
@@ -27,7 +26,7 @@ Class nsArrayClass;
 			if ([value isKindOfClass:nsDictionaryClass]) {
 				Class klass = [JastorRuntimeHelper propertyClassForPropertyName:key ofClass:[self class]];
                 if (klass == [NSObject class]) {
-                    value = [[[NSDictionary alloc] initWithDictionary:value] autorelease];
+                    value = [[NSDictionary alloc] initWithDictionary:value];
                 }else if (klass == [NSDictionary class]) {
                     Class dictionaryItemType = [[self class] performSelector:NSSelectorFromString([NSString stringWithFormat:@"%@_class", key])];
                     
@@ -35,7 +34,7 @@ Class nsArrayClass;
                     
                     for (NSString *key in [value allKeys]) {
                         id child = [value objectForKey:key];
-                        Jastor *childDTO = [[[dictionaryItemType alloc] initWithDictionary:child] autorelease];
+                        Jastor *childDTO = [[dictionaryItemType alloc] initWithDictionary:child];
                         [childObjects setObject:childDTO forKey:key];
                     }
                     
@@ -44,7 +43,7 @@ Class nsArrayClass;
                     
                     
                 }else {
-                    value = [[[klass alloc] initWithDictionary:value] autorelease];
+                    value = [[klass alloc] initWithDictionary:value];
                 }
 			}
 			// handle array
@@ -55,7 +54,7 @@ Class nsArrayClass;
 				
 				for (id child in value) {
 					if ([[child class] isSubclassOfClass:nsDictionaryClass]) {
-						Jastor *childDTO = [[[arrayItemType alloc] initWithDictionary:child] autorelease];
+						Jastor *childDTO = [[arrayItemType alloc] initWithDictionary:child];
 						[childObjects addObject:childDTO];
 					} else {
 						[childObjects addObject:child];
@@ -70,9 +69,6 @@ Class nsArrayClass;
                 [self setValue:[DateTimeUtils getDateFromIsoFormat:value] forKey:key];
             } else if ([klass isSubclassOfClass:[CustomNSDateComponents class]]) {
                 [self setValue:[DateTimeUtils deSerializeDateComponents:value] forKey:key];
-            } else if ([klass isSubclassOfClass:[EnumObject class]]) {
-                NSObject *enumObject = [[klass alloc] initWithString:value];
-                [self setValue:enumObject forKey:key];
             } else {
                 [self setValue:value forKey:key];
             }
@@ -95,8 +91,6 @@ Class nsArrayClass;
 //	for (NSString *key in [JastorRuntimeHelper propertyNames:[self class]]) {
 //		[self setValue:nil forKey:key];
 //	}
-	
-	[super dealloc];
 }
 
 - (void)encodeWithCoder:(NSCoder*)encoder {

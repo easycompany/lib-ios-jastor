@@ -64,7 +64,7 @@ static NSMutableDictionary *propertyClassByClassAndPropertyName;
 	
 	[propertyListByClass setObject:propertyNames forKey:className];
 	
-	return [propertyNames autorelease];
+	return propertyNames;
 }
 
 + (Class)propertyClassForPropertyName:(NSString *)propertyName ofClass:(Class)klass {

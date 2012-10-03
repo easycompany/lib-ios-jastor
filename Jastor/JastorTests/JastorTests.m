@@ -33,8 +33,6 @@
 	Product *product = [[Product alloc] initWithDictionary:productDictionary];
 	
 	STAssertEquals(product.name, @"foo", @"name should be foo");
-	
-	[product release];
 }
 
 - (void)testDictionaryWithDifferentTypesIntoObject {
@@ -47,8 +45,6 @@
 	
 	STAssertEquals(product.createdAt, date, @"date should be date");
 	STAssertEquals([product.amount intValue], 13, @"amount should be 13");
-	
-	[product release];
 }
 
 - (void)testDictionaryWithNestedObjectIntoObject {
@@ -70,7 +66,6 @@
 	
 	NSLog(@"product.category = %@", product.category);
 	
-	[product release];
 }
 
 - (NSMutableArray *)categoryCollectionArrayOfLevel:(NSString *)level {
@@ -107,7 +102,6 @@
 	STAssertEqualObjects([child1_2 class], [ProductCategory class], @"category.children[1] should be ProductCategory");
 	STAssertTrue([[child1_2 name] isEqualToString:@"1.2"], @"category.children[1].name should == '1.2'");
 
-	[category release];
 }
 
 - (void)testDictionaryWithTreeArrayIntoObject {
