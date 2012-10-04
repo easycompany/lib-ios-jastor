@@ -1,5 +1,7 @@
 #import "Jastor.h"
 #import "JastorRuntimeHelper.h"
+#import "DateTimeUtils.h"
+#import "CustomNSDateComponents.h"
 
 @implementation Jastor
 
@@ -23,7 +25,26 @@ Class nsArrayClass;
 			// handle dictionary
 			if ([value isKindOfClass:nsDictionaryClass]) {
 				Class klass = [JastorRuntimeHelper propertyClassForPropertyName:key ofClass:[self class]];
-				value = [[[klass alloc] initWithDictionary:value] autorelease];
+                if (klass == [NSObject class]) {
+                    value = [[NSDictionary alloc] initWithDictionary:value];
+                }else if (klass == [NSDictionary class]) {
+                    Class dictionaryItemType = [[self class] performSelector:NSSelectorFromString([NSString stringWithFormat:@"%@_class", key])];
+                    
+                    NSMutableDictionary *childObjects = [NSMutableDictionary dictionaryWithCapacity:[[value allKeys] count]];
+                    
+                    for (NSString *key in [value allKeys]) {
+                        id child = [value objectForKey:key];
+                        Jastor *childDTO = [[dictionaryItemType alloc] initWithDictionary:child];
+                        [childObjects setObject:childDTO forKey:key];
+                    }
+                    
+                    
+                    value = childObjects;
+                    
+                    
+                }else {
+                    value = [[klass alloc] initWithDictionary:value];
+                }
 			}
 			// handle array
 			else if ([value isKindOfClass:nsArrayClass]) {
@@ -33,7 +54,7 @@ Class nsArrayClass;
 				
 				for (id child in value) {
 					if ([[child class] isSubclassOfClass:nsDictionaryClass]) {
-						Jastor *childDTO = [[[arrayItemType alloc] initWithDictionary:child] autorelease];
+						Jastor *childDTO = [[arrayItemType alloc] initWithDictionary:child];
 						[childObjects addObject:childDTO];
 					} else {
 						[childObjects addObject:child];
@@ -43,7 +64,14 @@ Class nsArrayClass;
 				value = childObjects;
 			}
 			// handle all others
-			[self setValue:value forKey:key];
+            Class klass = [JastorRuntimeHelper propertyClassForPropertyName:key ofClass:[self class]];
+            if ([klass isSubclassOfClass:[NSDate class]]) {
+                [self setValue:[DateTimeUtils getDateFromIsoFormat:value] forKey:key];
+            } else if ([klass isSubclassOfClass:[CustomNSDateComponents class]]) {
+                [self setValue:[DateTimeUtils deSerializeDateComponents:value] forKey:key];
+            } else {
+                [self setValue:value forKey:key];
+            }
 		}
 		
 		id objectIdValue;
@@ -60,11 +88,9 @@ Class nsArrayClass;
 - (void)dealloc {
 	self.objectId = nil;
 	
-	for (NSString *key in [JastorRuntimeHelper propertyNames:[self class]]) {
-		[self setValue:nil forKey:key];
-	}
-	
-	[super dealloc];
+//	for (NSString *key in [JastorRuntimeHelper propertyNames:[self class]]) {
+//		[self setValue:nil forKey:key];
+//	}
 }
 
 - (void)encodeWithCoder:(NSCoder*)encoder {
