@@ -85,14 +85,6 @@ Class nsArrayClass;
 	return self;	
 }
 
-- (void)dealloc {
-	self.objectId = nil;
-	
-//	for (NSString *key in [JastorRuntimeHelper propertyNames:[self class]]) {
-//		[self setValue:nil forKey:key];
-//	}
-}
-
 - (void)encodeWithCoder:(NSCoder*)encoder {
 	[encoder encodeObject:self.objectId forKey:idPropertyNameOnObject];
 	for (NSString *key in [JastorRuntimeHelper propertyNames:[self class]]) {
