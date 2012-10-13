@@ -24,7 +24,8 @@ Class nsArrayClass;
 			
 			// handle dictionary
 			if ([value isKindOfClass:nsDictionaryClass]) {
-				Class klass = [JastorRuntimeHelper propertyClassForPropertyName:key ofClass:[self class]];
+                NSString *type = [value objectForKey:@"@type"];
+				Class klass = NSClassFromString(type);//[JastorRuntimeHelper propertyClassForPropertyName:key ofClass:[self class]];
                 if (klass == [NSObject class]) {
                     value = [[NSDictionary alloc] initWithDictionary:value];
                 }else if (klass == [NSDictionary class]) {
