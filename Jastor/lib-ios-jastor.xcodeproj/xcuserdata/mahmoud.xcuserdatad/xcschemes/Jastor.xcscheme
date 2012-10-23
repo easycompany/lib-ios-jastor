@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E4E480DE1499B821009C36D8"
-               BuildableName = "libJastor.a"
+               BuildableName = "liblib-ios-jastor.a"
                BlueprintName = "lib-ios-jastor"
                ReferencedContainer = "container:lib-ios-jastor.xcodeproj">
             </BuildableReference>
@@ -32,7 +32,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E4E480EE1499B821009C36D8"
-               BuildableName = "JastorTests.octest"
+               BuildableName = "lib-ios-jastorTests.octest"
                BlueprintName = "lib-ios-jastorTests"
                ReferencedContainer = "container:lib-ios-jastor.xcodeproj">
             </BuildableReference>

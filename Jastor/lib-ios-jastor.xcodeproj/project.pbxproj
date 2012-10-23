@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		1EC69741161D551D004918D9 /* CustomNSDateComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = 1EC6973F161D551D004918D9 /* CustomNSDateComponents.h */; };
 		1EC69742161D551D004918D9 /* CustomNSDateComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC69740161D551D004918D9 /* CustomNSDateComponents.m */; };
-		1EF70C4A16368975002F1070 /* libecf-ios-util.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EF70C4916368975002F1070 /* libecf-ios-util.a */; };
 		E4E480E31499B821009C36D8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E480E21499B821009C36D8 /* Foundation.framework */; };
 		E4E480E91499B821009C36D8 /* Jastor.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E480E81499B821009C36D8 /* Jastor.m */; };
 		E4E480F11499B821009C36D8 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E480F01499B821009C36D8 /* SenTestingKit.framework */; };
@@ -39,16 +38,15 @@
 /* Begin PBXFileReference section */
 		1EC6973F161D551D004918D9 /* CustomNSDateComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomNSDateComponents.h; sourceTree = "<group>"; };
 		1EC69740161D551D004918D9 /* CustomNSDateComponents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomNSDateComponents.m; sourceTree = "<group>"; };
-		1EF70C4916368975002F1070 /* libecf-ios-util.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libecf-ios-util.a"; path = "../../ecf-ios/ecf-ios-util/build/Release-iphoneos/libecf-ios-util.a"; sourceTree = "<group>"; };
 		E4E480DF1499B821009C36D8 /* liblib-ios-jastor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblib-ios-jastor.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4E480E21499B821009C36D8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		E4E480E61499B821009C36D8 /* lib-ios-jastor-Prefix.pch */ = {isa = PBXFileReference; path = "lib-ios-jastor-Prefix.pch"; sourceTree = "<group>"; };
+		E4E480E61499B821009C36D8 /* lib-ios-jastor-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "lib-ios-jastor-Prefix.pch"; sourceTree = "<group>"; };
 		E4E480E71499B821009C36D8 /* Jastor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Jastor.h; sourceTree = "<group>"; };
 		E4E480E81499B821009C36D8 /* Jastor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Jastor.m; sourceTree = "<group>"; };
 		E4E480EF1499B821009C36D8 /* lib-ios-jastorTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "lib-ios-jastorTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4E480F01499B821009C36D8 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		E4E480F21499B821009C36D8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		E4E480FA1499B821009C36D8 /* lib-ios-jastorTests-Info.plist */ = {isa = PBXFileReference; path = "lib-ios-jastorTests-Info.plist"; sourceTree = "<group>"; };
+		E4E480FA1499B821009C36D8 /* lib-ios-jastorTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "lib-ios-jastorTests-Info.plist"; sourceTree = "<group>"; };
 		E4E480FC1499B821009C36D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E4E480FE1499B821009C36D8 /* JastorTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JastorTests.h; sourceTree = "<group>"; };
 		E4E480FF1499B821009C36D8 /* JastorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JastorTests.m; sourceTree = "<group>"; };
@@ -65,7 +63,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1EF70C4A16368975002F1070 /* libecf-ios-util.a in Frameworks */,
 				E4E480E31499B821009C36D8 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -87,7 +84,6 @@
 		E4E480D41499B821009C36D8 = {
 			isa = PBXGroup;
 			children = (
-				1EF70C4916368975002F1070 /* libecf-ios-util.a */,
 				E4E480E41499B821009C36D8 /* Jastor */,
 				E4E480F81499B821009C36D8 /* JastorTests */,
 				E4E480E11499B821009C36D8 /* Frameworks */,
@@ -358,7 +354,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "lib-ios-jastor";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "\"/Work/Services/Retail App/ecf-ios/ecf-ios-util\"/**";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
@@ -372,7 +368,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "lib-ios-jastor";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "\"/Work/Services/Retail App/ecf-ios/ecf-ios-util\"/**";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};
