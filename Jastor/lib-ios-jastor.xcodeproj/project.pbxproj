@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E0B128D1636B6DF00BEB663 /* libecf-ios-util.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E0B128C1636B6DF00BEB663 /* libecf-ios-util.a */; };
 		1EC69741161D551D004918D9 /* CustomNSDateComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = 1EC6973F161D551D004918D9 /* CustomNSDateComponents.h */; };
 		1EC69742161D551D004918D9 /* CustomNSDateComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC69740161D551D004918D9 /* CustomNSDateComponents.m */; };
 		E4E480E31499B821009C36D8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E480E21499B821009C36D8 /* Foundation.framework */; };
 		E4E480E91499B821009C36D8 /* Jastor.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E480E81499B821009C36D8 /* Jastor.m */; };
 		E4E480F11499B821009C36D8 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E480F01499B821009C36D8 /* SenTestingKit.framework */; };
-		E4E480F31499B821009C36D8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E480F21499B821009C36D8 /* UIKit.framework */; };
 		E4E480F41499B821009C36D8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E480E21499B821009C36D8 /* Foundation.framework */; };
 		E4E480F71499B821009C36D8 /* liblib-ios-jastor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E480DF1499B821009C36D8 /* liblib-ios-jastor.a */; };
 		E4E480FD1499B821009C36D8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4E480FB1499B821009C36D8 /* InfoPlist.strings */; };
@@ -36,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1E0B128C1636B6DF00BEB663 /* libecf-ios-util.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libecf-ios-util.a"; path = "/Users/mahmoud/Library/Developer/Xcode/DerivedData/ecf-ios-bxduuvyzsvlbphbbbpezgmoiqfdr/Build/Products/Debug-iphoneos/libecf-ios-util.a"; sourceTree = "<absolute>"; };
 		1EC6973F161D551D004918D9 /* CustomNSDateComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomNSDateComponents.h; sourceTree = "<group>"; };
 		1EC69740161D551D004918D9 /* CustomNSDateComponents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomNSDateComponents.m; sourceTree = "<group>"; };
 		E4E480DF1499B821009C36D8 /* liblib-ios-jastor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblib-ios-jastor.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,7 +46,6 @@
 		E4E480E81499B821009C36D8 /* Jastor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Jastor.m; sourceTree = "<group>"; };
 		E4E480EF1499B821009C36D8 /* lib-ios-jastorTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "lib-ios-jastorTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4E480F01499B821009C36D8 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		E4E480F21499B821009C36D8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		E4E480FA1499B821009C36D8 /* lib-ios-jastorTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "lib-ios-jastorTests-Info.plist"; sourceTree = "<group>"; };
 		E4E480FC1499B821009C36D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E4E480FE1499B821009C36D8 /* JastorTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JastorTests.h; sourceTree = "<group>"; };
@@ -63,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E0B128D1636B6DF00BEB663 /* libecf-ios-util.a in Frameworks */,
 				E4E480E31499B821009C36D8 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -72,7 +73,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4E480F11499B821009C36D8 /* SenTestingKit.framework in Frameworks */,
-				E4E480F31499B821009C36D8 /* UIKit.framework in Frameworks */,
 				E4E480F41499B821009C36D8 /* Foundation.framework in Frameworks */,
 				E4E480F71499B821009C36D8 /* liblib-ios-jastor.a in Frameworks */,
 			);
@@ -103,9 +103,9 @@
 		E4E480E11499B821009C36D8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1E0B128C1636B6DF00BEB663 /* libecf-ios-util.a */,
 				E4E480E21499B821009C36D8 /* Foundation.framework */,
 				E4E480F01499B821009C36D8 /* SenTestingKit.framework */,
-				E4E480F21499B821009C36D8 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -351,10 +351,14 @@
 				DSTROOT = /tmp/Jastor.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Jastor/lib-ios-jastor-Prefix.pch";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Users/mahmoud/Library/Developer/Xcode/DerivedData/ecf-ios-bxduuvyzsvlbphbbbpezgmoiqfdr/Build/Products/Debug-iphoneos\"",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "lib-ios-jastor";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "";
+				USER_HEADER_SEARCH_PATHS = "\"/Work/Services/Retail App/ecf-ios\"/**";
 			};
 			name = Debug;
 		};
@@ -365,10 +369,14 @@
 				DSTROOT = /tmp/Jastor.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Jastor/lib-ios-jastor-Prefix.pch";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Users/mahmoud/Library/Developer/Xcode/DerivedData/ecf-ios-bxduuvyzsvlbphbbbpezgmoiqfdr/Build/Products/Debug-iphoneos\"",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "lib-ios-jastor";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "";
+				USER_HEADER_SEARCH_PATHS = "\"/Work/Services/Retail App/ecf-ios\"/**";
 			};
 			name = Release;
 		};
