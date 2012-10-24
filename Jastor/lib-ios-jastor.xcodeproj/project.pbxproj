@@ -358,7 +358,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "lib-ios-jastor";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "\"/Work/Services/Retail App/ecf-ios\"/**";
+				USER_HEADER_SEARCH_PATHS = "\"${SRCROOT}/../..\"/**";
 			};
 			name = Debug;
 		};
@@ -376,21 +376,23 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "lib-ios-jastor";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "\"/Work/Services/Retail App/ecf-ios\"/**";
+				USER_HEADER_SEARCH_PATHS = "\"${SRCROOT}/../..\"/**";
 			};
 			name = Release;
 		};
 		E4E481071499B821009C36D8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Jastor/Jastor-Prefix.pch";
+				GCC_PREFIX_HEADER = "Jastor/lib-ios-jastor-Prefix.pch";
 				INFOPLIST_FILE = "JastorTests/lib-ios-jastorTests-Info.plist";
 				PRODUCT_NAME = "lib-ios-jastorTests";
+				USER_HEADER_SEARCH_PATHS = "\"/Work/Services/Retail App/ecf-ios\"/**";
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -398,14 +400,16 @@
 		E4E481081499B821009C36D8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Jastor/Jastor-Prefix.pch";
+				GCC_PREFIX_HEADER = "Jastor/lib-ios-jastor-Prefix.pch";
 				INFOPLIST_FILE = "JastorTests/lib-ios-jastorTests-Info.plist";
 				PRODUCT_NAME = "lib-ios-jastorTests";
+				USER_HEADER_SEARCH_PATHS = "\"/Work/Services/Retail App/ecf-ios\"/**";
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
