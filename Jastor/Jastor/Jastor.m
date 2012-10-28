@@ -70,6 +70,8 @@ Class nsArrayClass;
                 [self setValue:[DateTimeUtils getDateFromIsoFormat:value] forKey:key];
             } else if ([klass isSubclassOfClass:[CustomNSDateComponents class]]) {
                 [self setValue:[DateTimeUtils deSerializeDateComponents:value] forKey:key];
+            } else if (klass == nil && [JastorRuntimeHelper isClassTypeForPropertyName:key ofClass:[self class]]) {
+                [self setValue:[JastorRuntimeHelper NSClassFromString:value] forKey:key];
             } else {
                 [self setValue:value forKey:key];
             }
@@ -85,6 +87,8 @@ Class nsArrayClass;
 	}
 	return self;	
 }
+
+
 
 - (void)encodeWithCoder:(NSCoder*)encoder {
 	[encoder encodeObject:self.objectId forKey:idPropertyNameOnObject];
