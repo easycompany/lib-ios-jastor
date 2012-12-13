@@ -65,8 +65,11 @@ Class nsArrayClass;
 			}
 			// handle all others
             Class klass = [JastorRuntimeHelper propertyClassForPropertyName:key ofClass:[self class]];
+            
             if ([klass isSubclassOfClass:[NSDate class]]) {
                 [self setValue:[DateTimeUtils getDateFromIsoFormat:value] forKey:key];
+            } else if ([[[klass alloc] init] respondsToSelector:@selector(initWithString:)]) {
+                [self setValue:[[klass alloc]initWithString:(NSString*)value] forKey:key];
             } else if ([klass isSubclassOfClass:[CustomNSDateComponents class]]) {
                 [self setValue:[DateTimeUtils deSerializeDateComponents:value] forKey:key];
             } else {
