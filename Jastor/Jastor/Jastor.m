@@ -25,26 +25,32 @@ Class nsArrayClass;
 			// handle dictionary
 			if ([value isKindOfClass:nsDictionaryClass]) {
 				Class klass = [JastorRuntimeHelper propertyClassForPropertyName:key ofClass:[self class]];
-                if (klass == [NSObject class]) {
-                    value = [[NSDictionary alloc] initWithDictionary:value];
-                }else if (klass == [NSDictionary class]) {
-                    Class dictionaryItemType = [[self class] performSelector:NSSelectorFromString([NSString stringWithFormat:@"%@_class", key])];
-                    
-                    NSMutableDictionary *childObjects = [NSMutableDictionary dictionaryWithCapacity:[[value allKeys] count]];
-                    
-                    for (NSString *key in [value allKeys]) {
-                        id child = [value objectForKey:key];
-                        Jastor *childDTO = [[dictionaryItemType alloc] initWithDictionary:child];
-                        [childObjects setObject:childDTO forKey:key];
+                if ([key isEqualToString:@"payload"]) {
+                    Class commandPayload = NSClassFromString([dictionary objectForKey:@"commandType"]);
+                    value = [[commandPayload alloc] initWithDictionary:value];
+                } else {
+                    if (klass == [NSObject class]) {
+                        value = [[NSDictionary alloc] initWithDictionary:value];
+                    }else if (klass == [NSDictionary class]) {
+                        Class dictionaryItemType = [[self class] performSelector:NSSelectorFromString([NSString stringWithFormat:@"%@_class", key])];
+                        
+                        NSMutableDictionary *childObjects = [NSMutableDictionary dictionaryWithCapacity:[[value allKeys] count]];
+                        
+                        for (NSString *key in [value allKeys]) {
+                            id child = [value objectForKey:key];
+                            Jastor *childDTO = [[dictionaryItemType alloc] initWithDictionary:child];
+                            [childObjects setObject:childDTO forKey:key];
+                        }
+                        
+                        
+                        value = childObjects;
+                        
+                        
+                    }else {
+                        value = [[klass alloc] initWithDictionary:value];
                     }
-                    
-                    
-                    value = childObjects;
-                    
-                    
-                }else {
-                    value = [[klass alloc] initWithDictionary:value];
                 }
+                
 			}
 			// handle array
 			else if ([value isKindOfClass:nsArrayClass]) {
