@@ -21,10 +21,10 @@ Class nsArrayClass;
 			id value = [dictionary valueForKey:key];
 			
 			if (value == [NSNull null] || value == nil) continue;
-			
+            Class klass = [JastorRuntimeHelper propertyClassForPropertyName:key ofClass:[self class]];
+
 			// handle dictionary
 			if ([value isKindOfClass:nsDictionaryClass]) {
-				Class klass = [JastorRuntimeHelper propertyClassForPropertyName:key ofClass:[self class]];
                 if (klass == [NSObject class]) {
                     value = [[NSDictionary alloc] initWithDictionary:value];
                 }else if (klass == [NSDictionary class]) {
@@ -37,12 +37,15 @@ Class nsArrayClass;
                         Jastor *childDTO = [[dictionaryItemType alloc] initWithDictionary:child];
                         [childObjects setObject:childDTO forKey:key];
                     }
-                    
-                    
                     value = childObjects;
-                    
-                    
-                }else {
+                } else if ([key isEqualToString:@"payload"]) {
+                    NSString *className = [[[self class] description] lowercaseString];
+                    NSString *typeKey = [NSString stringWithFormat:@"%@Type", className];
+                    NSString *typeClass = [dictionary objectForKey:typeKey];
+                    klass = NSClassFromString(typeClass);
+                    value = [[klass alloc] initWithDictionary:value];
+                } else {
+
                     value = [[klass alloc] initWithDictionary:value];
                 }
 			}
@@ -64,7 +67,6 @@ Class nsArrayClass;
 				value = childObjects;
 			}
 			// handle all others
-            Class klass = [JastorRuntimeHelper propertyClassForPropertyName:key ofClass:[self class]];
             
             if ([klass isSubclassOfClass:[NSDate class]]) {
                 [self setValue:[DateTimeUtils getDateFromIsoFormat:value] forKey:key];
