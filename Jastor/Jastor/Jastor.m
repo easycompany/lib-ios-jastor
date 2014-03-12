@@ -5,9 +5,9 @@
 
 @implementation Jastor
 
-@synthesize objectId;
+@synthesize id;
 static NSString *idPropertyName = @"id";
-static NSString *idPropertyNameOnObject = @"objectId";
+static NSString *idPropertyNameOnObject = @"id";
 
 Class nsDictionaryClass;
 Class nsArrayClass;
@@ -25,9 +25,13 @@ Class nsArrayClass;
 
 			// handle dictionary
 			if ([value isKindOfClass:nsDictionaryClass]) {
-                if (klass == [NSObject class]) {
+                if ([key isEqualToString:@"payload"]) {
+                    NSString *payloadType = [[dictionary objectForKey:@"headers"] objectForKey:@"PAYLOAD_TYPE"];
+                    klass = NSClassFromString(payloadType);
+                    value = [[klass alloc] initWithDictionary:value];
+                } else if (klass == [NSObject class]) {
                     value = [[NSDictionary alloc] initWithDictionary:value];
-                }else if (klass == [NSDictionary class]) {
+                } else if (klass == [NSDictionary class]) {
                     Class dictionaryItemType = [[self class] performSelector:NSSelectorFromString([NSString stringWithFormat:@"%@_class", key])];
                     
                     NSMutableDictionary *childObjects = [NSMutableDictionary dictionaryWithCapacity:[[value allKeys] count]];
@@ -38,12 +42,6 @@ Class nsArrayClass;
                         [childObjects setObject:childDTO forKey:key];
                     }
                     value = childObjects;
-                } else if ([key isEqualToString:@"payload"]) {
-                    NSString *className = [[[self class] description] lowercaseString];
-                    NSString *typeKey = [NSString stringWithFormat:@"%@Type", className];
-                    NSString *typeClass = [dictionary objectForKey:typeKey];
-                    klass = NSClassFromString(typeClass);
-                    value = [[klass alloc] initWithDictionary:value];
                 } else {
 
                     value = [[klass alloc] initWithDictionary:value];
@@ -91,7 +89,7 @@ Class nsArrayClass;
 }
 
 - (void)dealloc {
-	self.objectId = nil;
+	self.id = nil;
 	
 //	for (NSString *key in [JastorRuntimeHelper propertyNames:[self class]]) {
 //		[self setValue:nil forKey:key];
@@ -99,7 +97,7 @@ Class nsArrayClass;
 }
 
 - (void)encodeWithCoder:(NSCoder*)encoder {
-	[encoder encodeObject:self.objectId forKey:idPropertyNameOnObject];
+	[encoder encodeObject:self.id forKey:idPropertyNameOnObject];
 	for (NSString *key in [JastorRuntimeHelper propertyNames:[self class]]) {
 		[encoder encodeObject:[self valueForKey:key] forKey:key];
 	}
@@ -122,14 +120,14 @@ Class nsArrayClass;
 - (NSString *)description {
 	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
 	
-	if (self.objectId) [dic setObject:self.objectId forKey:idPropertyNameOnObject];
+	if (self.id) [dic setObject:self.id forKey:idPropertyNameOnObject];
 	
 	for (NSString *key in [JastorRuntimeHelper propertyNames:[self class]]) {
 		id value = [self valueForKey:key];
 		if (value != nil) [dic setObject:value forKey:key];
 	}
 	
-	return [NSString stringWithFormat:@"#<%@: id = %@ %@>", [self class], self.objectId, [dic description]];
+	return [NSString stringWithFormat:@"#<%@: id = %@ %@>", [self class], self.id, [dic description]];
 }
 
 - (BOOL)isEqual:(id)object {
@@ -137,7 +135,7 @@ Class nsArrayClass;
 	
 	Jastor *model = (Jastor *)object;
 	
-	return [self.objectId isEqualToString:model.objectId];
+	return [self.id isEqualToString:model.id];
 }
 
 @end

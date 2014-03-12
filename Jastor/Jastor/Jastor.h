@@ -10,6 +10,6 @@
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 
-@property (nonatomic, retain) NSString *objectId;
+@property (nonatomic, retain) NSString *id;
 
 @end
