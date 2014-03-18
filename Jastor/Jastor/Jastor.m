@@ -23,8 +23,20 @@ Class nsArrayClass;
 			if (value == [NSNull null] || value == nil) continue;
             Class klass = [JastorRuntimeHelper propertyClassForPropertyName:key ofClass:[self class]];
 
+            if ([key isEqualToString:@"payload"] && klass == [NSObject class]) {
+                if ([dictionary objectForKey:@"commandType"] != nil) {
+                    NSString *commandType = [dictionary objectForKey:@"commandType"];
+                    klass = NSClassFromString(commandType);
+                    value = [[klass alloc] initWithDictionary:value];
+                }
+                else if ([dictionary objectForKey:@"eventType"] != nil) {
+                    NSString *eventType = [dictionary objectForKey:@"eventType"];
+                    klass = NSClassFromString(eventType);
+                    value = [[klass alloc] initWithDictionary:value];
+                }
+            }
 			// handle dictionary
-			if ([value isKindOfClass:nsDictionaryClass]) {
+			else if ([value isKindOfClass:nsDictionaryClass]) {
                 if ([key isEqualToString:@"payload"]) {
                     NSString *payloadType = [[dictionary objectForKey:@"headers"] objectForKey:@"PAYLOAD_TYPE"];
                     klass = NSClassFromString(payloadType);
@@ -64,15 +76,17 @@ Class nsArrayClass;
 				
 				value = childObjects;
 			}
-			// handle all others
-            
+            // handle all others
             if ([klass isSubclassOfClass:[NSDate class]]) {
                 [self setValue:[DateTimeUtils getDateFromIsoFormat:value] forKey:key];
-            } else if ([[[klass alloc] init] respondsToSelector:@selector(initWithString:)]) {
+            }
+            else if ([[[klass alloc] init] respondsToSelector:@selector(initWithString:)]) {
                 [self setValue:[[klass alloc]initWithString:(NSString*)value] forKey:key];
-            } else if ([klass isSubclassOfClass:[CustomNSDateComponents class]]) {
+            }
+            else if ([klass isSubclassOfClass:[CustomNSDateComponents class]]) {
                 [self setValue:[DateTimeUtils deSerializeDateComponents:value] forKey:key];
-            } else {
+            }
+            else {
                 [self setValue:value forKey:key];
             }
 		}
