@@ -33,6 +33,10 @@ Class nsArrayClass;
                     NSString *eventType = [dictionary objectForKey:@"eventType"];
                     klass = NSClassFromString(eventType);
                     value = [[klass alloc] initWithDictionary:value];
+                } else if ([[dictionary objectForKey:@"headers"] objectForKey:@"PAYLOAD_TYPE"] != nil) {
+                    NSString *payloadType = [[dictionary objectForKey:@"headers"] objectForKey:@"PAYLOAD_TYPE"];
+                    klass = NSClassFromString(payloadType);
+                    value = [[klass alloc] initWithDictionary:value];
                 }
             }
 			// handle dictionary
