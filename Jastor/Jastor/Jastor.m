@@ -23,7 +23,7 @@ Class nsArrayClass;
 			if (value == [NSNull null] || value == nil) continue;
             Class klass = [JastorRuntimeHelper propertyClassForPropertyName:key ofClass:[self class]];
 
-            if ([key isEqualToString:@"payload"] && klass == [NSObject class]) {
+            if ([key isEqualToString:@"payload"]) {
                 if ([dictionary objectForKey:@"commandType"] != nil) {
                     NSString *commandType = [dictionary objectForKey:@"commandType"];
                     klass = NSClassFromString(commandType);
@@ -41,11 +41,7 @@ Class nsArrayClass;
             }
 			// handle dictionary
 			else if ([value isKindOfClass:nsDictionaryClass]) {
-                if ([key isEqualToString:@"payload"]) {
-                    NSString *payloadType = [[dictionary objectForKey:@"headers"] objectForKey:@"PAYLOAD_TYPE"];
-                    klass = NSClassFromString(payloadType);
-                    value = [[klass alloc] initWithDictionary:value];
-                } else if (klass == [NSObject class]) {
+                if (klass == [NSObject class]) {
                     value = [[NSDictionary alloc] initWithDictionary:value];
                 } else if (klass == [NSDictionary class]) {
                     Class dictionaryItemType = [[self class] performSelector:NSSelectorFromString([NSString stringWithFormat:@"%@_class", key])];
