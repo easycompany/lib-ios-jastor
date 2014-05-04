@@ -1,13 +1,15 @@
 #import <objc/runtime.h>
 #import "JastorRuntimeHelper.h"
 #import "Jastor.h"
+#include "java/lang/reflect/Field.h"
+#include "java/lang/reflect/Modifier.h"
 
 static const char *property_getTypeName(objc_property_t property) {
 	const char *attributes = property_getAttributes(property);
 	char buffer[1 + strlen(attributes)];
 	strcpy(buffer, attributes);
 	char *state = buffer, *attribute;
-	while ((attribute = strsep(&state, ",")) != NULL) {
+	if ((attribute = strsep(&state, ",")) != NULL) {
 		if (attribute[0] == 'T') {
 			return (const char *)[[NSData dataWithBytes:(attribute + 3) length:strlen(attribute) - 4] bytes];
 		}
@@ -31,6 +33,7 @@ static NSMutableDictionary *propertyClassByClassAndPropertyName;
 		return value; 
 	}
 	
+    // try to get the object properties using the old code
 	NSMutableArray *propertyNames = [[NSMutableArray alloc] init];
 	unsigned int propertyCount = 0;
     Class tempClass = klass;
@@ -59,6 +62,34 @@ static NSMutableDictionary *propertyClassByClassAndPropertyName;
         free(properties);
         
         tempClass = [tempClass superclass];
+    }
+    
+    // get the properties of the translated object using reflection
+    if ([propertyNames count]==0) {
+        
+        IOSObjectArray *classFields = [[IOSClass classWithClass:klass] getFields];
+        IOSObjectArray *a__ = classFields;
+        JavaLangReflectField * const *b__ = ((IOSObjectArray *) nil_chk(a__))->buffer_;
+        JavaLangReflectField * const *e__ = b__ + a__->size_;
+        
+        while (b__ < e__) {
+            
+            JavaLangReflectField *field = (*b__++);
+            
+            if ([JavaLangReflectModifier isPublicWithInt:[((JavaLangReflectField *) nil_chk(field)) getModifiers]] && ![JavaLangReflectModifier isTransientWithInt:[field getModifiers]] && ![JavaLangReflectModifier isStaticWithInt:[field getModifiers]]) {
+                
+                NSString *fieldName = [field getName];
+                if (![fieldName isEqualToString:@"isa"]) {
+                    NSString *key = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(klass), fieldName];
+                    NSString *fieldType = [[field getType] getName];
+                    
+                    [propertyNames addObject:fieldName];
+                    [propertyClassByClassAndPropertyName setObject:fieldType forKey:key];
+                    NSLog(@"%@: %@", [field getName], [[field getType] getName]);
+                }
+            }
+            
+        }
     }
     
 	
