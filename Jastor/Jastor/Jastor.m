@@ -2,6 +2,10 @@
 #import "JastorRuntimeHelper.h"
 #import "DateTimeUtils.h"
 #import "CustomNSDateComponents.h"
+#include "java/lang/Enum.h"
+#include "IOSClass.h"
+#import "DbRecord.h"
+#import "DbDocument.h"
 
 @implementation Jastor
 
@@ -76,19 +80,26 @@ Class nsArrayClass;
 				
 				value = childObjects;
 			}
-            // handle all others
-            if ([klass isSubclassOfClass:[NSDate class]]) {
-                [self setValue:[DateTimeUtils getDateFromIsoFormat:value] forKey:key];
-            }
-            else if ([[[klass alloc] init] respondsToSelector:@selector(initWithString:)]) {
-                [self setValue:[[klass alloc]initWithString:(NSString*)value] forKey:key];
+            else if ([klass isSubclassOfClass:[NSDate class]]) {
+                value = [DateTimeUtils getDateFromIsoFormat:value];
             }
             else if ([klass isSubclassOfClass:[CustomNSDateComponents class]]) {
-                [self setValue:[DateTimeUtils deSerializeDateComponents:value] forKey:key];
+                value = [DateTimeUtils deSerializeDateComponents:value];
             }
-            else {
-                [self setValue:value forKey:key];
+            else if ([[[klass alloc] init] respondsToSelector:@selector(initWithString:)]) {
+                value = [[klass alloc]initWithString:(NSString*)value];
             }
+            else if ([klass isSubclassOfClass:[JavaLangEnum class]]) {
+                value = [JavaLangEnum valueOfWithIOSClass:[IOSClass classWithClass:klass] withNSString:value];
+            }
+            
+            NSString *iosKey = [NSString stringWithFormat:@"%@_",key];
+            if ([self isKindOfClass:[DbDocument class]] || [self isKindOfClass:[DbRecord class]]) {
+                iosKey = key;
+            }
+            // set the value for the iosKey
+            [self setValue:value forKey:iosKey];
+
 		}
 		
 		id objectIdValue;
@@ -102,13 +113,7 @@ Class nsArrayClass;
 	return self;	
 }
 
-- (void)dealloc {
-	self.id = nil;
-	
-//	for (NSString *key in [JastorRuntimeHelper propertyNames:[self class]]) {
-//		[self setValue:nil forKey:key];
-//	}
-}
+
 
 - (void)encodeWithCoder:(NSCoder*)encoder {
 	[encoder encodeObject:self.id forKey:idPropertyNameOnObject];
