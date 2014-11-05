@@ -3,6 +3,7 @@
 #import "Jastor.h"
 #include "java/lang/reflect/Field.h"
 #include "java/lang/reflect/Modifier.h"
+#define K_Excluded_Properties @[@"hash", @"superclass", @"description", @"debugDescription"]
 
 static const char *property_getTypeName(objc_property_t property) {
     const char *attributes = property_getAttributes(property);
@@ -49,19 +50,27 @@ static NSMutableDictionary *propertyClassByClassAndPropertyName;
             const char * name = property_getName(property);
             
             NSString *propertyName = [NSString stringWithUTF8String:name];
-            [propertyNames addObject:propertyName];
-            
-            NSString *key = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(klass), propertyName];
-            NSString *className;
-            if ([propertyName isEqualToString:@"enumValue"]) {
-                className = @"NSString";
-            } else {
-                className = [NSString stringWithUTF8String:property_getTypeName(property)];
+            if (![K_Excluded_Properties containsObject:propertyName]) {
+                
+                NSString *key = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(klass), propertyName];
+                NSString *className;
+                if ([propertyName isEqualToString:@"enumValue"]) {
+                    className = @"NSString";
+                } else {
+                    const char *type = property_getTypeName(property);
+                    if (type == nil) {
+                        className = nil;
+                    } else {
+                        className = [NSString stringWithUTF8String:type];
+                    }
+                }
+                
+                if (className != nil) {
+                    [propertyNames addObject:propertyName];
+                    [propertyClassByClassAndPropertyName setObject:className forKey:key];
+                }
             }
-                    
-            if (className != nil) {
-                [propertyClassByClassAndPropertyName setObject:className forKey:key];
-            }
+
         }
         free(properties);
         
