@@ -5,16 +5,20 @@
 #include "java/lang/reflect/Modifier.h"
 
 static const char *property_getTypeName(objc_property_t property) {
-	const char *attributes = property_getAttributes(property);
-	char buffer[1 + strlen(attributes)];
-	strcpy(buffer, attributes);
-	char *state = buffer, *attribute;
-	if ((attribute = strsep(&state, ",")) != NULL) {
-		if (attribute[0] == 'T') {
-			return (const char *)[[NSData dataWithBytes:(attribute + 3) length:strlen(attribute) - 4] bytes];
-		}
-	}
-	return "@";
+    const char *attributes = property_getAttributes(property);
+    char buffer[1 + strlen(attributes)];
+    strcpy(buffer, attributes);
+    char *state = buffer, *attribute;
+    while ((attribute = strsep(&state, ",")) != NULL) {
+        if (attribute[0] == 'T') {
+            size_t len = strlen(attribute);
+            attribute[len - 1] = '\0';
+            const char *type = (const char *)[[NSData dataWithBytes:(attribute + 3) length:len - 2] bytes];
+            return type;
+
+        }
+    }
+    return "@";
 }
 
 @implementation JastorRuntimeHelper
