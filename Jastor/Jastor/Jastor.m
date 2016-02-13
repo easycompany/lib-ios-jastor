@@ -1,13 +1,23 @@
 #import "Jastor.h"
 #import "JastorRuntimeHelper.h"
-#import "DateTimeUtils.h"
 #import "CustomNSDateComponents.h"
 #include "java/lang/Enum.h"
 #include "IOSClass.h"
 #import "DbRecord.h"
 #import "DbDocument.h"
+#import "ISO8601DateFormatterJASTOR.h"
+
+static ISO8601DateFormatterJASTOR* isoDataFormatter;
 
 @implementation Jastor
+
++ (void)initialize {
+    [super initialize];
+    
+    isoDataFormatter = [[ISO8601DateFormatterJASTOR alloc] init];
+    isoDataFormatter.includeTime = YES;
+    isoDataFormatter.defaultTimeZone =  [NSTimeZone timeZoneForSecondsFromGMT:0];
+}
 
 @synthesize id;
 static NSString *idPropertyName = @"id";
@@ -81,10 +91,10 @@ Class nsArrayClass;
 				value = childObjects;
 			}
             else if ([klass isSubclassOfClass:[NSDate class]]) {
-                value = [DateTimeUtils getDateFromIsoFormat:value];
+                value = [isoDataFormatter dateFromString:value];
             }
             else if ([klass isSubclassOfClass:[CustomNSDateComponents class]]) {
-                value = [DateTimeUtils deSerializeDateComponents:value];
+                value = [self deSerializeDateComponents:value];
             }
             else if ([[[klass alloc] init] respondsToSelector:@selector(initWithString:)]) {
                 value = [[klass alloc]initWithString:(NSString*)value];
@@ -155,6 +165,20 @@ Class nsArrayClass;
 	Jastor *model = (Jastor *)object;
 	
 	return [self.id isEqualToString:model.id];
+}
+
+- (NSDateComponents*)deSerializeDateComponents:(NSString*)dateComponentString
+{
+    NSArray *components = [dateComponentString componentsSeparatedByString:@","];
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    [comps setYear:[[components objectAtIndex:0] intValue]];
+    [comps setMonth:[[components objectAtIndex:1] intValue]];
+    [comps setDay:[[components objectAtIndex:2] intValue]];
+    [comps setHour:[[components objectAtIndex:3] intValue]];
+    [comps setMinute:[[components objectAtIndex:4] intValue]];
+    [comps setSecond:[[components objectAtIndex:5] intValue]];
+    [comps setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:[[components objectAtIndex:6] intValue]*3600]];
+    return comps;
 }
 
 @end
